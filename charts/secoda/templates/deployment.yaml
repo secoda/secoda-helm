@@ -1,0 +1,126 @@
+{{ $globals := .Values.global -}}
+{{ $datastores := .Values.datastores -}}
+{{ $chartVersion := .Chart.AppVersion -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "secoda.fullname" . }}
+  annotations: 
+    {{- toYaml .Values.annotations | nindent 4 }}
+  labels:
+    {{- include "secoda.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      {{- include "secoda.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "secoda.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "secoda.serviceAccountName" . }}
+      {{- with .Values.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+      {{- range $key, $val := .Values.services }}
+        - name: {{ $key }}
+          {{- with (merge $globals.securityContext $val.securityContext) }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          image: "{{ coalesce $val.image.registry $globals.image.registry }}/{{ coalesce $val.image.name $globals.image.name }}:{{ coalesce $val.image.tag $globals.image.tag $chartVersion }}"
+          imagePullPolicy: {{ coalesce $val.image.pullPolicy $globals.image.pullPolicy }}
+          {{- with $val.command }}
+          command: {{ . }}
+          {{ end }}
+          {{- with  coalesce $val.args }}
+          args: {{ . }}
+          {{ end }}
+          env: 
+          {{- with (compact (concat $globals.env $val.env)) }}
+             {{- toYaml . | nindent 10 }}
+          {{ end }}
+          - name: APISERVICE_DATABASE_CONNECTION
+            valueFrom:
+              secretKeyRef:
+                name: {{ coalesce $datastores.secoda.existing_secret "secoda-keycloak" }}
+                key: APISERVICE_DATABASE_CONNECTION
+          - name: APISERVICE_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: {{ coalesce $datastores.secoda.existing_secret "secoda-keycloak" }}
+                key: KEYCLOAK_SECRET
+          - name: KC_DB_URL
+            valueFrom:
+              secretKeyRef:
+                name: {{ coalesce $datastores.secoda.existing_secret "secoda-keycloak" }}
+                key: KC_DB_URL
+          - name: KC_DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ coalesce $datastores.secoda.existing_secret "secoda-keycloak" }}
+                key: KC_DB_PASSWORD
+          - name: KEYCLOAK_ADMIN_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ coalesce $datastores.secoda.existing_secret "secoda-keycloak" }}
+                key: KEYCLOAK_ADMIN_PASSWORD
+          - name: KEYCLOAK_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: {{ coalesce $datastores.secoda.existing_secret "secoda-keycloak" }}
+                key: KEYCLOAK_SECRET
+          - name: PUBLIC_KEY
+            valueFrom:
+              secretKeyRef:
+                name: {{ coalesce $datastores.secoda.existing_secret "secoda-keycloak" }}
+                key: PUBLIC_KEY
+          - name: PRIVATE_KEY
+            valueFrom:
+              secretKeyRef:
+                name: {{ coalesce $datastores.secoda.existing_secret "secoda-keycloak" }}
+                key: PRIVATE_KEY
+          {{- with $val.ports }}
+          ports: 
+           {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with $val.livenessProbe }}
+          livenessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with $val.readinessProbe }}
+          readinessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          resources:
+            {{- toYaml $val.resources | nindent 12 }}
+      {{- end }}
+      {{- with .Values.dnsConfig }}
+      dnsConfig:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
