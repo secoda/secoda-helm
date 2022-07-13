@@ -24,16 +24,27 @@ jobs:
         with:
           entrypoint: "/kubeconform"
           args: "-summary -output json charts/secoda/1.yaml"
-  release:
+  bump:
     needs: validate
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Bump version
-        uses: beehivewarrior/bump_helm@1973aaec88762812a8989bc1996a39281d6819f1
-        with:
-          chart_name: secoda
+      - name: Configure Git
+        run: |
+          git config user.name "$GITHUB_ACTOR"
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+      - name: commit docs changes
+        run: |
+          result=$(./bump.sh)
+          git commit -am "ci: version bump $result"
+          git push
+  release:
+    needs: bump
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
       - name: Install Helm
         uses: azure/setup-helm@v1
         with:
