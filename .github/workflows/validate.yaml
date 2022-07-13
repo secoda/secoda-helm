@@ -16,7 +16,7 @@ jobs:
       - name: run helm
         working-directory: charts/secoda
         run: |
-          helm template -f examples/predefined-secrets.yaml . > charts/secoda/1.yaml
+          helm template -f examples/predefined-secrets.yaml . > 1.yaml
       - name: test predefined
         uses: docker://ghcr.io/yannh/kubeconform:master
         with:
