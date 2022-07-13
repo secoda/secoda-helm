@@ -1,0 +1,200 @@
+# Default values for secoda.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+services:
+  api:
+    image:
+      registry: ""
+      name: "on-premise-api"
+      pullPolicy: ""
+      tag: ""
+    command: ["/bin/sh"]
+    args: ["-c", "./server.sh"]
+    env: []
+    ports:
+      - containerPort: 5007
+    resources:
+      requests:
+        memory: 2048Mi
+        cpu: 1024m
+      limits:
+        memory: 2048Mi
+        cpu: 1024m
+    readinessProbe:
+      tcpSocket:
+        port: 5007
+    securityContext: {}
+  
+  worker:
+    image:
+      registry: ""
+      name: "on-premise-api"
+      pullPolicy: ""
+      tag: ""
+    command: ["/bin/sh"]
+    args: ["-c", "./worker.sh"]
+    env: []
+    ports:
+      - containerPort: 5007
+    resources:
+      requests:
+        memory: 2048Mi
+        cpu: 1024m
+      limits:
+        memory: 4096Mi
+        cpu: 2048m
+    readinessProbe:
+      tcpSocket:
+        port: 5007
+    securityContext: {}
+
+  frontend:
+    image:
+      registry: ""
+      name: "on-premise-frontend"
+      pullPolicy: ""
+      tag: ""
+    args: []
+    env: []
+    ports:
+      - name: https
+        containerPort: 443 
+    resources:
+      requests:
+        memory: 1024m
+        cpu: 512m
+    livenessProbe:
+      tcpSocket:
+        port: 443
+      initialDelaySeconds: 30
+      timeoutSeconds: 5
+    readinessProbe: {}
+    securityContext: {}
+
+  auth:
+    image:
+      registry: ""
+      name: "on-premise-auth"
+      pullPolicy: ""
+      tag: ""
+    env:
+      - name: KC_DB_USERNAME
+        value: postgres
+      - name: KC_DB
+        value: postgres
+      - name: KEYCLOAK_ADMIN
+        value: admin
+    ports:
+      - containerPort: 8080
+      - containerPort: 8443
+    args: 
+      - start --auto-build --http-relative-path /auth --hostname-strict false --proxy edge --spi-login-protocol-openid-connect-legacy-logout-redirect-uri=true --import-realm
+    resources:
+      requests:
+        memory: 2048Mi
+        cpu: 512m
+      limits:
+        memory: 3072Mi
+        cpu: 512m
+    livenessProbe: {}
+    readinessProbe:
+      httpGet:
+        path: /auth/realms/secoda/.well-known/openid-configuration
+        port: 8080
+      initialDelaySeconds: 90
+      timeoutSeconds: 5
+      periodSeconds: 10
+    securityContext: {}
+
+  redis:
+    image:
+      registry: ""
+      name: "redis"
+      pullPolicy: ""
+      tag: "6.2"
+    env: []
+    ports:
+      - containerPort: 6379
+    command: ["redis-server"]
+    resources:
+      requests:
+        memory: 1024Mi
+        cpu: 512m
+      limits:
+        memory: 1024Mi
+        cpu: 512m
+    livenessProbe: {}
+    readinessProbe:
+      tcpSocket:
+        port: 6379
+    securityContext: {}
+
+global:
+  image:
+    registry: "secoda"
+    pullPolicy: IfNotPresent
+    tag: "4"
+  env: []
+  resources: {}
+  securityContext: {}
+    # allowPrivilegeEscalation: false
+datastores:
+  secoda:
+    # if set, will use an existing secret otherwise a secret will be created with the values
+    existing_secret: ""
+    admin_password: "881f9297e9eec136" # We suggest using `openssl rand -hex 20 | cut -c 1-16` to fill this value.
+    secret_key: "73c6c359-6832-49c0-bd2e-cd156be4e059" # You must use `uuidgen | tr '[:upper:]' '[:lower:]'` to fill this value.
+    private_key: "LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFcEFJQkFBS0NBUUVBeGtIVE0zYkhSRk1ZaWYvUzlreUFQTGRIMHdBcGY3aGsrU3lNanY2U1VIdXlmSUlCCnozSWZBcWRONEFxYkVmNXNpOWY4ZHNHaWdsK0o3cVFOdGtzd01LSXlCdmZ5U2Y1RWxEQ2J6djVkNTJGOGxNaysKUGttR1N4QkdibjNncmJsMVRuc3ovcmpjTEJVWUlsUW91VFlEKzY3L3Q5dC9PeDRFR2NRL0ZWZEhpbVZkVjFDcQpuTGlGTU9YOWxVT1MyWW0wRFg5WjhjeGxaQ2w5M3lWNG1QZmxkNFdYakpPQU84Yk15MWVxTDlQK2E3RnBSOWdNCi9nODREMmFCKzNFZ0QvdEJxczZmMTM2RVVDUTZqaWxjK2UrWjdKUDZBOUR0akR0ZFdTK2F1cndLUUNhMUpudDQKQlUrSCthZmp5UEZ0eFZIV1VFNUZuV0pjQUFYYzd1V0szYzgxRndJREFRQUJBb0lCQUdQNjZpRjM4d0czemhZNQoxdyt5Z0xFZDFMREowaVBBdjlzUTVrbHVoQ2JtV3BxRGpab3ArUTJEaGJoSVlPOXdHUmxrOE1LSzRBTlRYdUhrCkJhNDZ1TEN0K3dDY3BhaysreUtvYU1xNGFHNjVNUFJ2a0Y0bEFmNTAxSy8vOXdCbEdJMWRnRmtpckpYbWhXYzYKZmRiNU1JVUtPWmRrc0FNR0hoZElhbSsrdGl0S0U3bTBhdjlCQ1FLVXpuRFFQMk5Qc3JPOUFPbURUTG1JSUxRdApiMmIzN3p4aXF5L2lWemM0VXRIdDNneDdCVW5vdFB2aUlIMjRFalVIdkdKMFJKZUFnSnl2OCt5YVFoZ2hza2hJCkVqdDhZRmtvcm4wVzZwbldVN0E5QUFnTXpOcllBL1BjWXYyQkRoZk8yMjNZL0ZHR2pTMC9wTkRjbnRwRXl0SVUKOW16eklBRUNnWUVBNTdwN0tNZGxIYnZEYkgzdFV3aUVTcXhSYzk5N2RhNGdLZE1sNGtlNzM4OVJLL0hiNE51WApPUG0rQnI2NDh3MUFGdGp5YkkrZkM5cERMOHZGUjhGb09rU1RzdmtsOUJzRGNHMklJZXRacGw4TXJEWGJlYjRWCk9PZ2lxd2IveGZRQm5sc2pDN1J3NHM5S0UxSGZKNU15VEFxTVV0VTd0Nk5nNDFWVW1iYXliUmNDZ1lFQTJ3WFoKMnRuZFZ3b1N6Y1puTGh6b0RnZVA3TTV5Q2szSlRLTzFFMUVKeCsrTGNMNUtNa0Y0Szg0L3BiOVVrUm4wT0VOZgpTNkdTWlBYbXdNdWEvMVVPandVUDNvRGlHOGpYeGlscExZVkxOSTg5ZVNyaDYzVUlubThudkI5RnI3d29rWWt0CmhTSm82VnBxRHdQYlJ3ZEVPQTlJVXB3RS93OE1vd3FFaDN3V2VBRUNnWUVBcjNEK1ljZGxCUGZ0WXl5TUM3dDgKL1ZRdGJ2OGFaK1JuTVlOTlFWNXlIV2JHMi9DSE9sekd4em85NXJscktZazBwcGVtSXc4eHFUV2NmSWxZV1pWUwpwaHJaZ0QwbHdRVGF1N29Sd1N5QWVYZXBEcERRRkFJWDZ6ZkZWNXM2OXRKZ2oxWU0ySVhLbWMyN0ZabDh6R2VqClF2TVJmbjAyY3poYzJJRDRSbENPRWcwQ2dZQjNHZWxyM3dsRDZaQnNJYlcrRjY0QTR3L2E0RENYZGRFL1FjNlgKNEh1SEk3WVo2d0NCNzZRZmZocVNVVWIxV0wyN1VyZWhjdzBlcGJHRHFiUnhvSms0SUxLT2RsdCtiR3Nac1M4bQp0OU03azZFRUlOT1ZyS0N4TnhUT2NkcjlRejUwVmJwUktYTVBZa0ZHUlB5YTFWSzlnV0g4dWlibFpCT2xIWFVRCkQrUlFBUUtCZ1FDVC8yUmV1RGNpWDlkWG4wN2d1dU9UZ25PTUhMQUJUQ0J3V0RBNjZQdVFkYWtYMjZxM3NWNmYKV0I5enlpMUkwQUpRdFJOeWhIYzhWRUdRanhHZXk3MXNrOGl3bm9xK0tWeW5OenpFOEpRNUxXb0hMOFU2ZTlmbwpOSFdVazZxbXpYZnZSTUt3NW9mbHUzejBKTlRnRExiMnkzc1FkT2toei84QlorSjk4aWs1Rnc9PQotLS0tLUVORCBSU0EgUFJJVkFURSBLRVktLS0tLQo=" # openssl genrsa -out secoda.private.pem 2048 && echo "Copy the following:" && cat secoda.private.pem | base64
+    public_key: "LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUF4a0hUTTNiSFJGTVlpZi9TOWt5QQpQTGRIMHdBcGY3aGsrU3lNanY2U1VIdXlmSUlCejNJZkFxZE40QXFiRWY1c2k5Zjhkc0dpZ2wrSjdxUU50a3N3Ck1LSXlCdmZ5U2Y1RWxEQ2J6djVkNTJGOGxNaytQa21HU3hCR2JuM2dyYmwxVG5zei9yamNMQlVZSWxRb3VUWUQKKzY3L3Q5dC9PeDRFR2NRL0ZWZEhpbVZkVjFDcW5MaUZNT1g5bFVPUzJZbTBEWDlaOGN4bFpDbDkzeVY0bVBmbApkNFdYakpPQU84Yk15MWVxTDlQK2E3RnBSOWdNL2c4NEQyYUIrM0VnRC90QnFzNmYxMzZFVUNRNmppbGMrZStaCjdKUDZBOUR0akR0ZFdTK2F1cndLUUNhMUpudDRCVStIK2FmanlQRnR4VkhXVUU1Rm5XSmNBQVhjN3VXSzNjODEKRndJREFRQUIKLS0tLS1FTkQgUFVCTElDIEtFWS0tLS0tCg==" # openssl rsa -in secoda.private.pem -pubout > secoda.public.pem && echo "Copy the following:" && cat secoda.public.pem | base64
+    db_host: "34.122.71.123" # this should be similar to `rds.amazonrds.com` or an ip address.
+    db_password: "qew7bpe5ytr0HGKcuq" # this should be alphanumeric, or it may break connection strings.
+
+persistence:
+  enabled: false
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+service:
+  type: ClusterIP
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+    # nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
+dnsConfig: {}
+annotations: {}
