@@ -69,4 +69,5 @@ GKE-specific configurations:
 ```
 brew install pre-commit
 pre-commit install
+asdf install semver latest
 ```
