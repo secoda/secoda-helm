@@ -28,6 +28,8 @@ jobs:
     needs: validate
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
       - name: Bump version
         uses: beehivewarrior/bump_helm@1973aaec88762812a8989bc1996a39281d6819f1
         with:
