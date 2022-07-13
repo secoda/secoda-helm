@@ -23,12 +23,13 @@ jobs:
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
       # - name: update chart version
       #   run: |
-      #     yq w -i Chart.yaml version "4.$GITHUB_RUN_NUMBER.0"
+      #    yq w -i charts/secoda/Chart.yaml version "1.$GITHUB_RUN_NUMBER.0"
       #     git commit -am "[skip ci] Automated version update"
       # - name: install helm-docs
       #   run: GO111MODULE=on go get github.com/norwoodj/helm-docs/cmd/helm-docs
       # - name: run helm-docs
       #   run: helm-docs --template-files=README.md.gotmpl
+      #   working-directory: charts/secoda
       # - name: commit docs changes
       #   run: | 
       #     git commit -am "[ci skip] docs update"
@@ -37,16 +38,7 @@ jobs:
         uses: azure/setup-helm@v1
         with:
           version: v3.7.1
-      - name: move files
-        run: | 
-          mkdir charts
-          cp *.yaml charts/
-          cp -rf templates charts/
-          cp .helmignore charts/
-          cp README.md charts/
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1.3.0
-        with:
-          charts_dir: charts
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
