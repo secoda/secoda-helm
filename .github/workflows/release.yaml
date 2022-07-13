@@ -6,7 +6,24 @@ on:
       - main
 
 jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: install helm
+        run: curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+      - name: run helm
+        working-directory: charts/secoda
+        run: |
+          helm template -f examples/predefined-secrets.yaml . > 1.yaml
+      - name: test predefined
+        uses: docker://ghcr.io/yannh/kubeconform:master
+        with:
+          entrypoint: "/kubeconform"
+          args: "-summary -output json charts/secoda/1.yaml"
   release:
+    needs: validate
     runs-on: ubuntu-latest
     steps:
       - uses: chrisdickinson/setup-yq@latest
@@ -16,7 +33,7 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-go@v2
         with:
-          go-version: '1.16.1'
+          go-version: "1.16.1"
       - name: Configure Git
         run: |
           git config user.name "$GITHUB_ACTOR"
@@ -31,7 +48,7 @@ jobs:
       #   run: helm-docs --template-files=README.md.gotmpl
       #   working-directory: charts/secoda
       # - name: commit docs changes
-      #   run: | 
+      #   run: |
       #     git commit -am "[ci skip] docs update"
       #     git push
       - name: Install Helm
