@@ -21,10 +21,10 @@ jobs:
         run: |
           git config user.name "$GITHUB_ACTOR"
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
-      - name: update chart version
-        run: |
-         yq w -i charts/secoda/Chart.yaml version "4.$GITHUB_RUN_NUMBER.0"
-          git commit -am "[skip ci] Automated version update"
+      # - name: update chart version
+      #   run: |
+      #    yq w -i charts/secoda/Chart.yaml version "4.$GITHUB_RUN_NUMBER.0"
+      #     git commit -am "[skip ci] Automated version update"
       # - name: install helm-docs
       #   run: GO111MODULE=on go get github.com/norwoodj/helm-docs/cmd/helm-docs
       # - name: run helm-docs
