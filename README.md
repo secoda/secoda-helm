@@ -62,3 +62,11 @@ GKE-specific configurations:
         $ gcloud container clusters get-credentials <CLUSTER> --region <REGION> # If using GKE
         $ helm repo update
         $ helm install my-secoda secoda/secoda -f predefined-secrets.yaml
+
+
+## Contributing
+
+```
+brew install pre-commit
+pre-commit install
+```
