@@ -11,8 +11,10 @@ services:
       name: "on-premise-api"
       pullPolicy: ""
       tag: ""
-    command: ["/bin/sh -c server.sh"]
-    args: []
+    command: ["/bin/sh"]
+    args:
+      - -c
+      - ./server.sh
     env: []
     ports:
       - containerPort: 5007
@@ -34,8 +36,10 @@ services:
       name: "on-premise-api"
       pullPolicy: ""
       tag: ""
-    command: ["/bin/sh -c worker.sh"]
-    args: []
+    command: ["/bin/sh"]
+    args:
+      - -c
+      - ./worker.sh
     env: []
     ports:
       - containerPort: 5007
