@@ -11,10 +11,8 @@ services:
       name: "on-premise-api"
       pullPolicy: ""
       tag: ""
-    command: ["/bin/sh"]
-    args:
-      - -c
-      - ./server.sh
+    command: []
+    args: []
     env: []
     ports:
       - containerPort: 5007
@@ -30,31 +28,6 @@ services:
         port: 5007
     securityContext: {}
   
-  worker:
-    image:
-      registry: ""
-      name: "on-premise-api"
-      pullPolicy: ""
-      tag: ""
-    command: ["/bin/sh"]
-    args:
-      - -c
-      - ./worker.sh
-    env: []
-    ports:
-      - containerPort: 5007
-    resources:
-      requests:
-        memory: 2048Mi
-        cpu: 1024m
-      limits:
-        memory: 4096Mi
-        cpu: 2048m
-    readinessProbe:
-      tcpSocket:
-        port: 5007
-    securityContext: {}
-
   frontend:
     image:
       registry: ""
