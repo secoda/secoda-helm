@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
       - name: install helm
         run: curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
       - name: run helm
@@ -24,12 +24,12 @@ jobs:
         with:
           entrypoint: "/kubeconform"
           args: "-summary -output json charts/secoda/1.yaml"
-  bump:
+  release:
     needs: validate
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
       - name: Configure Git
         run: |
           git config user.name "$GITHUB_ACTOR"
@@ -39,12 +39,6 @@ jobs:
           result=$(./bump.sh)
           git commit -am "ci: version bump $result"
           git push
-  release:
-    needs: bump
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
       - name: Install Helm
         uses: azure/setup-helm@v1
         with:
