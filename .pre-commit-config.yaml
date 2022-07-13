@@ -5,11 +5,3 @@ repos:
       - id: helm-docs
         args:
           [--chart-search-root=charts/secoda]
-  - repo: local
-    hooks:
-      - id: bump
-        name: bump
-        entry: .pre-commit/bump.sh
-        language: script
-        types: [bash]
-        pass_filenames: false

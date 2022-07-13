@@ -28,6 +28,12 @@ jobs:
     needs: validate
     runs-on: ubuntu-latest
     steps:
+      - name: Bump version
+        uses: explorium-ai/bump-helm-chart-action@d4da450016f565a0d55e87d898b0f89a40387fdc
+        with:
+          chart-path: charts/secoda
+          app_version: true
+          level: patch
       - name: Install Helm
         uses: azure/setup-helm@v1
         with:
