@@ -1,6 +1,6 @@
 apiVersion: v2
 name: secoda
-description: Helm chart for Secoda
+description: Kubernetes Helm chart for Secoda
 # A chart can be either an 'application' or a 'library' chart.
 #
 # Application charts are a collection of templates that can be packaged into version: 4.31.0

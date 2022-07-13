@@ -36,8 +36,8 @@ jobs:
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
       - name: commit docs changes
         run: |
-          result=$(./bump.sh)
-          git commit -am "ci: version bump $result"
+          new_version=$(./bump.sh)
+          git commit -am "ci: version bump $new_version"
           git push
       - name: Install Helm
         uses: azure/setup-helm@v1
