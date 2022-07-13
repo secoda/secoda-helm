@@ -36,7 +36,7 @@ jobs:
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
       - name: commit docs changes
         run: |
-          new_version=$(./bump.sh)
+          new_version=$(./bump.sh | tail -1 | cut -c2-)
           git commit -am "ci: version bump $new_version"
           git push
       - name: Install Helm
