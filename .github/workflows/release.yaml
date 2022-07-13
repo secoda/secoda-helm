@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+    paths:
+      - "charts/secoda/**"
 
 jobs:
   validate:
@@ -26,31 +28,6 @@ jobs:
     needs: validate
     runs-on: ubuntu-latest
     steps:
-      - uses: chrisdickinson/setup-yq@latest
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - uses: actions/setup-go@v2
-        with:
-          go-version: "1.16.1"
-      - name: Configure Git
-        run: |
-          git config user.name "$GITHUB_ACTOR"
-          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
-      # - name: update chart version
-      #   run: |
-      #    yq w -i charts/secoda/Chart.yaml version "4.$GITHUB_RUN_NUMBER.0"
-      #     git commit -am "[skip ci] Automated version update"
-      # - name: install helm-docs
-      #   run: GO111MODULE=on go get github.com/norwoodj/helm-docs/cmd/helm-docs
-      # - name: run helm-docs
-      #   run: helm-docs --template-files=README.md.gotmpl
-      #   working-directory: charts/secoda
-      # - name: commit docs changes
-      #   run: |
-      #     git commit -am "[ci skip] docs update"
-      #     git push
       - name: Install Helm
         uses: azure/setup-helm@v1
         with:
