@@ -25,10 +25,8 @@ spec:
       labels:
         {{- include "secoda.selectorLabels" . | nindent 8 }}
     spec:
-      {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+        - name: secoda-dockerhub
       serviceAccountName: {{ include "secoda.serviceAccountName" . }}
       {{- with .Values.podSecurityContext }}
       securityContext:
