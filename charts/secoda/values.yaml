@@ -111,7 +111,7 @@ services:
 
   redis:
     image:
-      registry: ""
+      registry: "docker.io"
       name: "redis"
       pullPolicy: ""
       tag: "6.2"

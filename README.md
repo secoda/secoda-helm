@@ -14,6 +14,10 @@ Guide](https://docs.secoda.co/self-hosted-secoda).
 
 ## Setup
 
+```bash
+kubectl create secret docker-registry secoda-dockerhub --docker-server=https://index.docker.io/v1/ --docker-username=secodaonpremise --docker-password=<CUSTOMER_SPECIFIC_PASSWORD> --docker-email=carter@secoda.co
+```
+
 Once your database cluster is created, connect to it and then create the keycloak user and two seperate databases on it.
 
 ```bash
@@ -55,5 +59,6 @@ GKE-specific configurations:
 - Comment out `ingress.tls.servicePort` as it is not required.
 
 5. Now you're all ready to install Secoda:
-
+        $ gcloud container clusters get-credentials <CLUSTER> --region <REGION> # If using GKE
+        $ helm repo update
         $ helm install my-secoda secoda/secoda -f predefined-secrets.yaml
