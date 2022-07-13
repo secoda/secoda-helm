@@ -155,7 +155,8 @@ datastores:
 persistence:
   enabled: false
 
-imagePullSecrets: []
+imagePullSecrets:
+  - name: secoda-dockerhub
 nameOverride: ""
 fullnameOverride: ""
 

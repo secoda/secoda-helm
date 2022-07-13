@@ -15,7 +15,7 @@ Guide](https://docs.secoda.co/self-hosted-secoda).
 ## Setup
 
 ```bash
-kubectl create secret docker-registry secoda-dockerhub --docker-server=https://index.docker.io/v1/ --docker-username=secodaonpremise --docker-password=<CUSTOMER_SPECIFIC_PASSWORD> --docker-email=carter@secoda.co
+kubectl create secret docker-registry secoda-dockerhub --docker-server=https://index.docker.io/v1/ --docker-username=secodaonpremise --docker-password=<CUSTOMER_SPECIFIC_PASSWORD> --docker-email=carter@secoda.co --namespace=<OPTIONAL_NAMESPACE>
 ```
 
 Once your database cluster is created, connect to it and then create the keycloak user and two seperate databases on it.
