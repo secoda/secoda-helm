@@ -4,4 +4,4 @@ repos:
     hooks:
       - id: helm-docs
         args:
-          [--template-files=README.md.gotmpl --chart-search-root=charts/secoda]
+          [--chart-search-root=charts/secoda]
