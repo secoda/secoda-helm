@@ -1,0 +1,14 @@
+apiVersion: v1
+entries:
+  secoda:
+  - apiVersion: v2
+    appVersion: 4.1.2
+    created: "2022-07-13T17:17:14.624119903Z"
+    description: helm x secoda
+    digest: 4b0f030a8a6ed381d4cca19aea0edd88e4330eae1eabb8d8ff0086beea486a96
+    name: secoda
+    type: application
+    urls:
+    - https://github.com/secoda/secoda-helm/releases/download/secoda-4.13.0/secoda-4.13.0.tgz
+    version: 4.13.0
+generated: "2022-07-13T17:17:14.624124903Z"
