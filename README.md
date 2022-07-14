@@ -5,6 +5,7 @@ Secoda on Kubernetes, based off the community work of [Dan Quackenbush](https://
 Secoda on your own infrastructure, please see the [Setup
 Guide](https://docs.secoda.co/self-hosted-secoda).
 
+This runs Secoda in a single pod and requires about 4 vCPU and 16 GB memory.
 ## Prerequisites
 
 * This chart requires **Helm 3.0**.
@@ -56,7 +57,7 @@ grant all privileges on database secoda to keycloak;
 GKE-specific configurations:
 
 - Specify `/*` as the value of `ingress.hosts.paths.path`.
-- Comment out `ingress.tls.servicePort` as it is not required.
+- The field `ingress.tls.servicePort` is not required.
 - (Optional) Follow SQL Auth Proxy [guide](https://cloud.google.com/sql/docs/postgres/connect-kubernetes-engine) and enable `cloudSqlAuthProxy.enabled` and modify `cloudSqlAuthProxy.databaseName`.
 
 5. Now you're all ready to install Secoda:
@@ -64,11 +65,11 @@ GKE-specific configurations:
         $ helm repo update
         $ helm install my-secoda secoda/secoda -f predefined-secrets.yaml
 
-
 ## Contributing
 
-```
+Install these tools:
+
+```bash
 brew install pre-commit
 pre-commit install
-asdf install semver latest
 ```
