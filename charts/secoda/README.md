@@ -10,7 +10,6 @@ Kubernetes Helm chart for Secoda
 |-----|------|---------|-------------|
 | affinity | object | `{}` |  |
 | annotations | object | `{}` |  |
-| cloudSqlAuthProxy.enabled | bool | `false` |  |
 | dnsConfig | object | `{}` |  |
 | fullnameOverride | string | `""` |  |
 | global.env | list | `[]` |  |
@@ -39,7 +38,7 @@ Kubernetes Helm chart for Secoda
 | services.api.ports[0].containerPort | int | `5007` |  |
 | services.api.readinessProbe.tcpSocket.port | int | `5007` |  |
 | services.api.resources.limits.cpu | string | `"1024m"` |  |
-| services.api.resources.limits.memory | string | `"2048Mi"` |  |
+| services.api.resources.limits.memory | string | `"4096Mi"` |  |
 | services.api.resources.requests.cpu | string | `"1024m"` |  |
 | services.api.resources.requests.memory | string | `"2048Mi"` |  |
 | services.api.securityContext | object | `{}` |  |
@@ -63,7 +62,7 @@ Kubernetes Helm chart for Secoda
 | services.auth.readinessProbe.periodSeconds | int | `10` |  |
 | services.auth.readinessProbe.timeoutSeconds | int | `5` |  |
 | services.auth.resources.limits.cpu | string | `"512m"` |  |
-| services.auth.resources.limits.memory | string | `"3072Mi"` |  |
+| services.auth.resources.limits.memory | string | `"2048Mi"` |  |
 | services.auth.resources.requests.cpu | string | `"512m"` |  |
 | services.auth.resources.requests.memory | string | `"2048Mi"` |  |
 | services.auth.securityContext | object | `{}` |  |
@@ -82,7 +81,7 @@ Kubernetes Helm chart for Secoda
 | services.frontend.ports[1].name | string | `"http"` |  |
 | services.frontend.readinessProbe | object | `{}` |  |
 | services.frontend.resources.requests.cpu | string | `"512m"` |  |
-| services.frontend.resources.requests.memory | string | `"1024m"` |  |
+| services.frontend.resources.requests.memory | string | `"2048Mi"` |  |
 | services.frontend.securityContext | object | `{}` |  |
 | services.redis.command[0] | string | `"redis-server"` |  |
 | services.redis.env | list | `[]` |  |
@@ -93,9 +92,9 @@ Kubernetes Helm chart for Secoda
 | services.redis.livenessProbe | object | `{}` |  |
 | services.redis.ports[0].containerPort | int | `6379` |  |
 | services.redis.readinessProbe.tcpSocket.port | int | `6379` |  |
-| services.redis.resources.limits.cpu | string | `"512m"` |  |
+| services.redis.resources.limits.cpu | string | `"256m"` |  |
 | services.redis.resources.limits.memory | string | `"1024Mi"` |  |
-| services.redis.resources.requests.cpu | string | `"512m"` |  |
+| services.redis.resources.requests.cpu | string | `"256m"` |  |
 | services.redis.resources.requests.memory | string | `"1024Mi"` |  |
 | services.redis.securityContext | object | `{}` |  |
 | tolerations | list | `[]` |  |

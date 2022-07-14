@@ -21,7 +21,7 @@ services:
         memory: 2048Mi
         cpu: 1024m
       limits:
-        memory: 2048Mi
+        memory: 4096Mi
         cpu: 1024m
     readinessProbe:
       tcpSocket:
@@ -43,7 +43,7 @@ services:
         containerPort: 80
     resources:
       requests:
-        memory: 1024m
+        memory: 2048Mi
         cpu: 512m
     livenessProbe:
       tcpSocket:
@@ -76,7 +76,7 @@ services:
         memory: 2048Mi
         cpu: 512m
       limits:
-        memory: 3072Mi
+        memory: 2048Mi
         cpu: 512m
     livenessProbe: {}
     readinessProbe:
@@ -101,10 +101,10 @@ services:
     resources:
       requests:
         memory: 1024Mi
-        cpu: 512m
+        cpu: 256m
       limits:
         memory: 1024Mi
-        cpu: 512m
+        cpu: 256m
     livenessProbe: {}
     readinessProbe:
       tcpSocket:
@@ -135,9 +135,6 @@ serviceAccount:
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
   name: ""
-
-cloudSqlAuthProxy:
-  enabled: false
 
 podAnnotations: {}
 
