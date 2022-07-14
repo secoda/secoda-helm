@@ -57,7 +57,7 @@ GKE-specific configurations:
 
 - Specify `/*` as the value of `ingress.hosts.paths.path`.
 - Comment out `ingress.tls.servicePort` as it is not required.
-- (Optional) Follow SQL Auth Proxy [guide](https://cloud.google.com/sql/docs/postgres/connect-kubernetes-engine) and enable `sql_proxy.enabled` and modify `sql_proxy.db_name`.
+- (Optional) Follow SQL Auth Proxy [guide](https://cloud.google.com/sql/docs/postgres/connect-kubernetes-engine) and enable `cloudSqlAuthProxy.enabled` and modify `cloudSqlAuthProxy.databaseName`.
 
 5. Now you're all ready to install Secoda:
         $ gcloud container clusters get-credentials <CLUSTER> --region <REGION> # If using GKE
