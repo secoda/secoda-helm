@@ -142,7 +142,7 @@ podSecurityContext: {}
   # fsGroup: 2000
 
 service:
-  type: ClusterIP
+  type: NodePort
 
 nodeSelector: {}
 tolerations: []
