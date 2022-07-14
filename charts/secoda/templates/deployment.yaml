@@ -91,7 +91,7 @@ spec:
               secretKeyRef:
                 name: {{ coalesce $datastores.secoda.existing_secret "secoda-keycloak" }}
                 key: PRIVATE_KEY
-          {{- if .Values.sql_proxy.enabled }}
+          {{- if .Values.sql_proxy.enabled -}}
           - name: cloud-sql-proxy
             # It is recommended to use the latest version of the Cloud SQL proxy
             # Make sure to update on a regular schedule!
