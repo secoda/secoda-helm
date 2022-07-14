@@ -61,6 +61,7 @@ GKE-specific configurations:
 - (Optional) Follow SQL Auth Proxy [guide](https://cloud.google.com/sql/docs/postgres/connect-kubernetes-engine) and enable `cloudSqlAuthProxy.enabled` and modify `cloudSqlAuthProxy.databaseName`.
 
 5. Now you're all ready to install Secoda:
+
         $ gcloud container clusters get-credentials <CLUSTER> --region <REGION> # If using GKE
         $ helm repo update
         $ helm install my-secoda secoda/secoda -f predefined-secrets.yaml
