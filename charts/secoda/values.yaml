@@ -38,7 +38,9 @@ services:
     env: []
     ports:
       - name: https
-        containerPort: 443 
+        containerPort: 443
+      - name: http
+        containerPort: 80
     resources:
       requests:
         memory: 1024m

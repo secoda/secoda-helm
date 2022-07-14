@@ -1,6 +1,6 @@
 # secoda
 
-![Version: 4.31.0](https://img.shields.io/badge/Version-4.31.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 4.10.5](https://img.shields.io/badge/AppVersion-4.10.5-informational?style=flat-square)
+![Version: 4.32.0](https://img.shields.io/badge/Version-4.32.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 4.10.5](https://img.shields.io/badge/AppVersion-4.10.5-informational?style=flat-square)
 
 Kubernetes Helm chart for Secoda
 
@@ -77,6 +77,8 @@ Kubernetes Helm chart for Secoda
 | services.frontend.livenessProbe.timeoutSeconds | int | `5` |  |
 | services.frontend.ports[0].containerPort | int | `443` |  |
 | services.frontend.ports[0].name | string | `"https"` |  |
+| services.frontend.ports[1].containerPort | int | `80` |  |
+| services.frontend.ports[1].name | string | `"http"` |  |
 | services.frontend.readinessProbe | object | `{}` |  |
 | services.frontend.resources.requests.cpu | string | `"512m"` |  |
 | services.frontend.resources.requests.memory | string | `"1024m"` |  |
