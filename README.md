@@ -1,7 +1,7 @@
 # secoda-helm
 
 This repository contains the official **Helm 3** chart for installing and configuring
-Secoda on Kubernetes. For full documentation on all the ways you can deploy
+Secoda on Kubernetes, based off the community work of [Dan Quackenbush](https://github.com/danquack). For full documentation on all the ways you can deploy
 Secoda on your own infrastructure, please see the [Setup
 Guide](https://docs.secoda.co/self-hosted-secoda).
 
