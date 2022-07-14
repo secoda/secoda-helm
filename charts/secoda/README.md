@@ -73,7 +73,7 @@ Kubernetes Helm chart for Secoda
 | services.frontend.image.registry | string | `""` |  |
 | services.frontend.image.tag | string | `""` |  |
 | services.frontend.livenessProbe.initialDelaySeconds | int | `30` |  |
-| services.frontend.livenessProbe.tcpSocket.port | int | `443` |  |
+| services.frontend.livenessProbe.tcpSocket.port | int | `80` |  |
 | services.frontend.livenessProbe.timeoutSeconds | int | `5` |  |
 | services.frontend.ports[0].containerPort | int | `443` |  |
 | services.frontend.ports[0].name | string | `"https"` |  |

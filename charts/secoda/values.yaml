@@ -47,7 +47,7 @@ services:
         cpu: 512m
     livenessProbe:
       tcpSocket:
-        port: 443
+        port: 80
       initialDelaySeconds: 30
       timeoutSeconds: 5
     readinessProbe: {}
