@@ -15,11 +15,7 @@ This runs Secoda in a single pod and requires about 4 vCPU and 16 GB memory.
 
 ## Setup
 
-```bash
-kubectl create secret docker-registry secoda-dockerhub --docker-server=https://index.docker.io/v1/ --docker-username=secodaonpremise --docker-password=<CUSTOMER_SPECIFIC_PASSWORD> --docker-email=carter@secoda.co --namespace=<OPTIONAL_NAMESPACE>
-```
-
-Once your database cluster is created, connect to it and then create the keycloak user and two seperate databases on it.
+Once your database is created, connect to it and then create the keycloak user and two seperate databases on it.
 
 ```bash
 psql -h <HOST> -U postgres
@@ -50,7 +46,7 @@ grant all privileges on database secoda to keycloak;
 4. Modify the `examples/predefined-secrets.yaml` file. Replace all values that have a comment next to them.
 
 - Uncomment `ingress.hosts` and change `ingress.hosts.host` to be the hostname where you will access Secoda.
-- If you are implementing TLS for your Secoda instance, uncomment `ingress.tls` and:
+- Load Balancer TLS is required for Secoda, uncomment `ingress.tls` and:
     - Specify the name of the SSL certificate to use as the value of `ingress.tls.secretName`.
     - Specify an array containing the hostname where you will access Secoda (the same value you configured for `ingress.hosts.host`).
 
@@ -60,7 +56,11 @@ GKE-specific configurations:
 - The field `ingress.tls.servicePort` is not required.
 - (Optional) Follow SQL Auth Proxy [guide](https://cloud.google.com/sql/docs/postgres/connect-kubernetes-engine) and enable `cloudSqlAuthProxy.enabled` and modify `cloudSqlAuthProxy.databaseName`.
 
-5. Now you're all ready to install Secoda:
+5. Add your customer-specific docker secret, this is required to pull Secoda's images:
+
+        $ kubectl create secret docker-registry secoda-dockerhub --docker-server=https://index.docker.io/v1/ --docker-username=secodaonpremise --docker-password=<CUSTOMER_SPECIFIC_PASSWORD> --docker-email=carter@secoda.co --namespace=<OPTIONAL_NAMESPACE>
+
+6. Now you're all ready to install Secoda:
 
         $ gcloud container clusters get-credentials <CLUSTER> --region <REGION> # If using GKE
         $ helm repo update
