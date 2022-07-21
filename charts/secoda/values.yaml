@@ -61,7 +61,7 @@ services:
       tag: ""
     env:
       - name: KC_DB_USERNAME
-        value: postgres
+        value: keycloak
       - name: KC_DB
         value: postgres
       - name: KEYCLOAK_ADMIN
