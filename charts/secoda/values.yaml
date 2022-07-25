@@ -70,7 +70,7 @@ services:
       - containerPort: 8080
       - containerPort: 8443
     args: 
-      - start --auto-build --http-relative-path /auth --hostname-strict false --proxy edge --spi-login-protocol-openid-connect-legacy-logout-redirect-uri=true --import-realm
+      - start --auto-build --db=postgres --http-relative-path /auth --hostname-strict false --proxy edge --spi-login-protocol-openid-connect-legacy-logout-redirect-uri=true --import-realm
     resources:
       requests:
         memory: 2048Mi
