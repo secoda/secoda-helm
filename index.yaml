@@ -3,6 +3,16 @@ entries:
   secoda:
   - apiVersion: v2
     appVersion: 4.10.5
+    created: "2022-07-26T14:14:27.444241649Z"
+    description: Kubernetes Helm chart for Secoda
+    digest: 6aacc7be84d1d293d6fe55d48c9a5ac4fa4b6e7a438dae40e911dbbb3f6b4b26
+    name: secoda
+    type: application
+    urls:
+    - https://github.com/secoda/secoda-helm/releases/download/secoda-4.40.0/secoda-4.40.0.tgz
+    version: 4.40.0
+  - apiVersion: v2
+    appVersion: 4.10.5
     created: "2022-07-25T14:57:19.567330973Z"
     description: Kubernetes Helm chart for Secoda
     digest: 1553b620c6c7ccaa05e94bc19397d66f4730542a904f3930db651b15a562c583
@@ -191,4 +201,4 @@ entries:
     urls:
     - https://github.com/secoda/secoda-helm/releases/download/secoda-4.13.0/secoda-4.13.0.tgz
     version: 4.13.0
-generated: "2022-07-25T14:57:19.567631172Z"
+generated: "2022-07-26T14:14:27.44436535Z"
