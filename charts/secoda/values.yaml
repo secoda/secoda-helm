@@ -114,7 +114,7 @@ services:
 global:
   image:
     registry: "secoda"
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
     tag: "4"
   env: []
   resources: {}
